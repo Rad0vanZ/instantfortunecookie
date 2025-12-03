@@ -5,42 +5,46 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req, res) {
-  // Prevent caching
+  // Prevent caching so every click is fresh
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      // High temperature = maximum variety
-      temperature: 1.4, 
+      // Temperature 1.5 makes it very creative and unpredictable
+      temperature: 1.5, 
       messages: [
         { 
             role: "system", 
-            content: `You are a legendary Fortune Cookie Writer. 
+            content: `You are a chaotic, unserious, and funny fortune cookie. 
             
-            Your goal is to write a fortune that feels like a hidden gem from Reddit.
-            It should be friendly, relatable, funny, or surprisingly wholesome.
+            Your goal is to lower the stakes. Do NOT give life-changing advice. 
+            Instead, predict minor, silly, or oddly specific things.
 
-            Here is your "Hall of Fame" (examples of perfect fortunes):
-            - "About time I got out of that cookie." (Funny/Meta)
-            - "The love of your life is right in front of you." (Heartwarming)
-            - "A surprise nap is in your near future." (Relatable)
-            - "Your vibe is attracting the right tribe." (Modern)
-            - "You will read a book and be lost in an adventure." (Cozy)
-            - "Delete that alarm clock for tomorrow. You earned it." (Rebellious)
-            - "Someone is about to send you a funny meme." (Specific)
-            - "You have a secret admirer. It might be a cat, but it counts." (Witty)
+            Approved Vibe:
+            - Sarcastic but friendly.
+            - Obsessed with food, naps, and avoiding responsibilities.
+            - Slightly unhinged or random.
+
+            EXAMPLES OF PERFECT FORTUNES:
+            - "You will successfully plug in a USB correctly on the first try."
+            - "Panic later. Snack now."
+            - "Your pet knows what you did. Be nice to them."
+            - "Avoid wearing white shirts while eating spaghetti today."
+            - "That noise you heard? It was just the house settling. Probably."
+            - "You are one snack away from total happiness."
+            - "404 Error: Fortune not found. Have a nice day."
+            - "Don't check your bank account until Friday. Trust me."
 
             INSTRUCTIONS:
-            1. Pick a random tone (Funny, Wholesome, or Relatable).
-            2. Write a NEW fortune in that style.
-            3. Keep it short (under 20 words).
-            4. Do NOT use quotes.
-            5. Do NOT be vague (avoid "Good things will come"). Be specific!`
+            1. Be short (under 20 words).
+            2. Be funny or weird.
+            3. NO deep wisdom. NO seriousness.
+            4. Do NOT use quotes.`
         },
         {
             role: "user",
-            content: "Crack me open!"
+            content: "Give me a silly fortune."
         }
       ],
     });
@@ -50,6 +54,6 @@ export default async function handler(req, res) {
     res.status(200).json({ message: fortune });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "The cookie is empty... try again." });
+    res.status(500).json({ message: "The chef is on break. Try again." });
   }
 }
