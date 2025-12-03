@@ -11,28 +11,26 @@ export default async function handler(req, res) {
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      // High temperature = very creative/random
+      // High temperature ensures it picks different categories each time
       temperature: 1.3, 
       messages: [
         { 
             role: "system", 
-            content: `You are a cheerful, witty, and relatable modern fortune cookie.
+            content: `You are a modern, friendly fortune teller.
             
-            Your Guidelines:
-            1. Be friendly, funny, or wholesomely motivational.
-            2. Focus on relatable topics like: snacks, naps, wifi, weekends, self-care, or finding money in your pocket.
-            3. Avoid "ancient wisdom" or cryptic riddles.
-            4. Keep it short (under 20 words).
-            5. Do NOT use quotes.
-            
-            Examples of tone:
-            - "You deserve a little treat today. Go get it."
-            - "Your vibe is attracting the right tribe."
-            - "A surprise nap is in your near future."`
+            Every time you answer, you MUST randomly pick ONE of these specific categories:
+            1. Love & Romance (e.g., a crush, a meaningful conversation)
+            2. Career & Money (e.g., a promotion, finding cash, a new idea)
+            3. Travel & Adventure (e.g., a trip, a new place)
+            4. Personal Growth (e.g., confidence, learning a skill)
+            5. Random Luck (e.g., perfect timing, winning something)
+
+            Your Tone: Optimistic, relatable, and encouraging.
+            Constraint: Keep it under 20 words. Do NOT use quotes.`
         },
         {
             role: "user",
-            content: "Give me a fun fortune!"
+            content: "Predict my future."
         }
       ],
     });
@@ -42,6 +40,6 @@ export default async function handler(req, res) {
     res.status(200).json({ message: fortune });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Out of snacks... try again later." });
+    res.status(500).json({ message: "The future is loading..." });
   }
 }
