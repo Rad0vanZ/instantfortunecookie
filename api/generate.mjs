@@ -11,26 +11,36 @@ export default async function handler(req, res) {
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      // High temperature ensures it picks different categories each time
-      temperature: 1.3, 
+      // High temperature = maximum variety
+      temperature: 1.4, 
       messages: [
         { 
             role: "system", 
-            content: `You are a modern, friendly fortune teller.
+            content: `You are a legendary Fortune Cookie Writer. 
             
-            Every time you answer, you MUST randomly pick ONE of these specific categories:
-            1. Love & Romance (e.g., a crush, a meaningful conversation)
-            2. Career & Money (e.g., a promotion, finding cash, a new idea)
-            3. Travel & Adventure (e.g., a trip, a new place)
-            4. Personal Growth (e.g., confidence, learning a skill)
-            5. Random Luck (e.g., perfect timing, winning something)
+            Your goal is to write a fortune that feels like a hidden gem from Reddit.
+            It should be friendly, relatable, funny, or surprisingly wholesome.
 
-            Your Tone: Optimistic, relatable, and encouraging.
-            Constraint: Keep it under 20 words. Do NOT use quotes.`
+            Here is your "Hall of Fame" (examples of perfect fortunes):
+            - "About time I got out of that cookie." (Funny/Meta)
+            - "The love of your life is right in front of you." (Heartwarming)
+            - "A surprise nap is in your near future." (Relatable)
+            - "Your vibe is attracting the right tribe." (Modern)
+            - "You will read a book and be lost in an adventure." (Cozy)
+            - "Delete that alarm clock for tomorrow. You earned it." (Rebellious)
+            - "Someone is about to send you a funny meme." (Specific)
+            - "You have a secret admirer. It might be a cat, but it counts." (Witty)
+
+            INSTRUCTIONS:
+            1. Pick a random tone (Funny, Wholesome, or Relatable).
+            2. Write a NEW fortune in that style.
+            3. Keep it short (under 20 words).
+            4. Do NOT use quotes.
+            5. Do NOT be vague (avoid "Good things will come"). Be specific!`
         },
         {
             role: "user",
-            content: "Predict my future."
+            content: "Crack me open!"
         }
       ],
     });
@@ -40,6 +50,6 @@ export default async function handler(req, res) {
     res.status(200).json({ message: fortune });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "The future is loading..." });
+    res.status(500).json({ message: "The cookie is empty... try again." });
   }
 }
